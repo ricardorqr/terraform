@@ -3,106 +3,60 @@ provider "aws" {
   profile = var.profile
 }
 
+# All created vpcs
+data "aws_vpcs" "all-vpcs" {
+  tags = {
+    Name = var.vpc-name
+  }
+}
+
+# All created key pairs
+data "aws_key_pair" "all-keys" {
+  tags = {
+    Name = var.key-name
+  }
+}
+
+# All created subnets
+data "aws_subnets" "all-subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpcs.all-vpcs.ids[0]]
+  }
+  tags = {
+    Name = var.subnet-name
+  }
+}
+
 # Create the security group to allow incoming SSH traffic
-resource "aws_security_group" "ssh-sg" {
-  name_prefix = "ssh-sg"
+resource "aws_security_group" "security-group" {
+  name   = "test-sg"
+  vpc_id = data.aws_vpcs.all-vpcs.ids[0]
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "test-sg"
+  }
 }
 
-## create the vpc
-#resource "aws_vpc" "vpc" {
-#  cidr_block = var.vpc-cidr # "10.0.0.0/16"
-#  tags       = {
-#    Name = "${var.project-name}-vpc"
-#  }
-#}
-#
-## create the internet gateway and attach it to the vpc
-#resource "aws_internet_gateway" "internet-gateway" {
-#  vpc_id = aws_vpc.vpc.id
-#  tags   = {
-#    Name = "${var.project-name}-igw"
-#  }
-#}
-#
-## create the public route table A and add access to the internet gateway
-#resource "aws_route_table" "public-route-table-a" {
-#  vpc_id = aws_vpc.vpc.id
-#  route {
-#    cidr_block = "0.0.0.0/0"
-#    gateway_id = aws_internet_gateway.internet-gateway.id
-#  }
-#  tags = {
-#    Name = "${var.project-name}-public-route-table-a"
-#  }
-#}
-#
-## create the private route table A
-#resource "aws_route_table" "private-route-table-a" {
-#  vpc_id = aws_vpc.vpc.id
-#  tags   = {
-#    Name = "${var.project-name}-private-route-table-a"
-#  }
-#}
-#
-## all availability zones in the region
-#data "aws_availability_zones" "available-zones" {}
-#
-## create the public subnet
-#resource "aws_subnet" "public-subnet-a" {
-#  vpc_id            = aws_vpc.vpc.id
-#  cidr_block        = var.public-subnet-a-cidr # "10.0.1.0/24"
-#  availability_zone = data.aws_availability_zones.available-zones.names[0] # us-east-1a
-#  tags              = {
-#    Name = "${var.project-name}-public-subnet-a"
-#  }
-#}
-#
-## create the private subnet
-#resource "aws_subnet" "private-subnet-a" {
-#  vpc_id            = aws_vpc.vpc.id
-#  cidr_block        = var.private-subnet-a-cidr # "10.0.2.0/24"
-#  availability_zone = data.aws_availability_zones.available-zones.names[0] # us-east-1a
-#  tags              = {
-#    Name = "${var.project-name}-private-subnet-a"
-#  }
-#}
-#
-#resource "aws_route_table_association" "public-subnet-route-table-a-association" {
-#  subnet_id      = aws_subnet.public-subnet-a.id
-#  route_table_id = aws_route_table.public-route-table-a.id
-#}
-#
-#resource "aws_route_table_association" "private-subnet-route-table-a-association" {
-#  subnet_id      = aws_subnet.private-subnet-a.id
-#  route_table_id = aws_route_table.private-route-table-a.id
-#}
-#
-## create the elastic ip
-#resource "aws_eip" "elastic-ip" {
-#  vpc = true
-#  tags              = {
-#    Name = "${var.project-name}-eip"
-#  }
-#}
-#
-## create the nat gateway
-#resource "aws_nat_gateway" "nat-gateway" {
-#  allocation_id = aws_eip.elastic-ip.id
-#  subnet_id     = aws_subnet.public-subnet-a.id
-#  tags          = {
-#    Name = "${var.project-name}-nat-gateway"
-#  }
-#}
-#
-## create the route to the nat gateway
-#resource "aws_route" "nat-gateway-route" {
-#  route_table_id         = aws_route_table.private-route-table-a.id
-#  destination_cidr_block = "0.0.0.0/0"
-#  nat_gateway_id         = aws_nat_gateway.nat-gateway.id
-#}
+# Create the EC2 instance
+resource "aws_instance" "ec2-instance" {
+  ami                    = "ami-0c94855ba95c71c99"
+  instance_type          = "t2.micro"
+  subnet_id              = data.aws_subnets.all-subnets.ids[0]
+  vpc_security_group_ids = [aws_security_group.security-group.id]
+  key_name               = data.aws_key_pair.all-keys.key_name
+  tags                   = {
+    Name = "test-ec2"
+  }
+}
