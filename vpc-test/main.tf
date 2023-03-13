@@ -5,8 +5,9 @@ provider "aws" {
 
 # Create the vpc
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc-cidr
-  tags       = {
+  cidr_block           = var.vpc-cidr
+  enable_dns_hostnames = true
+  tags                 = {
     Name = "${var.project-name}-vpc"
   }
 }
