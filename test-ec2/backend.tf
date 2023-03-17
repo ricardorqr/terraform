@@ -2,7 +2,7 @@
 terraform {
   backend "s3" {
     bucket  = "terraform-remote-state-tests"
-    key     = "ec2-test.tfstate"
+    key     = "test-ec2.tfstate"
     region  = "us-east-1"
     profile = "devwithrico"
   }
