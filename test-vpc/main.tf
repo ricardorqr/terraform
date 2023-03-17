@@ -1,6 +1,13 @@
 provider "aws" {
   region  = var.region
   profile = var.profile
+  default_tags {
+    tags = {
+      "automation" = "terraform"
+      "project"    = var.project-name
+      "env"        = "dev"
+    }
+  }
 }
 
 # Create the vpc
@@ -31,6 +38,7 @@ resource "aws_subnet" "public-subnet-a" {
   map_public_ip_on_launch = true
   tags                    = {
     Name = "${var.project-name}-public-subnet-a"
+    type = "public"
   }
 }
 
@@ -42,6 +50,7 @@ resource "aws_subnet" "public-subnet-b" {
   map_public_ip_on_launch = true
   tags                    = {
     Name = "${var.project-name}-public-subnet-b"
+    type = "public"
   }
 }
 
@@ -53,6 +62,7 @@ resource "aws_subnet" "private-subnet-a" {
   map_public_ip_on_launch = false
   tags                    = {
     Name = "${var.project-name}-private-subnet-a"
+    type = "private"
   }
 }
 
@@ -64,6 +74,7 @@ resource "aws_subnet" "private-subnet-b" {
   map_public_ip_on_launch = false
   tags                    = {
     Name = "${var.project-name}-private-subnet-b"
+    type = "private"
   }
 }
 
