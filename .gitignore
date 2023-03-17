@@ -1,2 +1,6 @@
 /terraform.iml
 /.idea/
+/test-vpc/.terraform/
+/test-vpc/.terraform.lock.hcl
+/test-jenkins/.terraform/
+/test-jenkins/.terraform.lock.hcl
