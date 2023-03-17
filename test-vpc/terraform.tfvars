@@ -1,6 +1,6 @@
 region                = "us-east-1"
 profile               = "devwithrico"
-project-name          = "test-jenkins"
+project-name          = "test"
 vpc-cidr              = "10.0.0.0/16"
 public-subnet-a-cidr  = "10.0.0.0/24"
 public-subnet-b-cidr  = "10.0.1.0/24"
