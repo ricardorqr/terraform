@@ -263,6 +263,7 @@ Connected to Kubernetes v1.25.6-eks-48e63af
 
 Save these settings.
 
-## 6. Configure GitHub Webhooks
+## 8. Create Pipelines
 
+You can get the pipelines code on the [Using Jenkins to deploy Spring Boot Applications into EKS](https://github.com/ricardorqr/jenkins-github-eks)
 
