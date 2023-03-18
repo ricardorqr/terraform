@@ -249,9 +249,19 @@ Add this configuration.
 
 ![kubecontext.png](.files/kubecontext.png)
 
+Select the `Credentials` `Kube`
+
 Test the connection.
 
+You should see something like this.
+
+```shell
+Connected to Kubernetes v1.25.6-eks-48e63af
+```
+
 ![testconnection.png](.files/testconnection.png)
+
+Save these settings.
 
 ## 6. Configure GitHub Webhooks
 
