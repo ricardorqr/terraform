@@ -5,3 +5,4 @@
 /test-jenkins/.terraform/
 /test-jenkins/.terraform.lock.hcl
 /test-jenkins/aws/
+/test-jenkins/.aws/

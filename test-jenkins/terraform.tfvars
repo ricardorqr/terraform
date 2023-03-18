@@ -1,0 +1,6 @@
+region       = "us-east-1"
+profile      = "devwithrico"
+key-name     = "devwithrico"
+subnet-name  = "test-public-subnet-a"
+vpc-name     = "test-vpc"
+project-name = "jenkins"
