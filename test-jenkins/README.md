@@ -1,4 +1,4 @@
-# Create Jenkins server and all its dependencies
+# Install Jenkins Using Terraform
 
 This Terraform script creates/installs the resources below.
 
