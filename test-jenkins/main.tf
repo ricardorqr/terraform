@@ -80,7 +80,7 @@ resource "null_resource" "ansible" {
   }
   # Copy the AWS credential
   provisioner "file" {
-    source      = "aws"
+    source      = ".aws"
     destination = "/home/ec2-user/.aws"
   }
   # Copy the install-jenkins.sh
