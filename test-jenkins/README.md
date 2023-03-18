@@ -225,7 +225,7 @@ users:
       command: aws
 ```
 
-Create a file in your local.
+Create a file in your local with this context.
 
 Go to `Dashboard >> Manage Jenkins >> Manage Nodes and Clouds >> Configure Clouds >>`.
 
@@ -241,10 +241,18 @@ Add a new Kubernetes credentials.
 
 Change the `Kind` to `Secret file`.
 
-Select the file you saved with the context you gathered after SSH the server and run the `cat` command.
+Select the file you saved in your local with the context you gathered after SSH the server and run the `cat` command.
+
+Add the name `Kubeconfig`.
 
 Add this configuration.
+
+![kubecontext.png](.files/kubecontext.png)
 
 Test the connection.
 
 ![testconnection.png](.files/testconnection.png)
+
+## 6. Configure GitHub Webhooks
+
+
