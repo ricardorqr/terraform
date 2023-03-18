@@ -100,14 +100,26 @@ Outputs:
 website_url = "http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080"
 ```
 
+## 4. Finish the Jenkins installation using your browser
+
+In the execution result, find the code below.
+
+```shell
+Outputs:
+
+website_url = "http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080"
+```
+
+Open this URL `http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080`.
+
 In the execution result, find the code below. This is the password to unlock Jenkins.
 
 ```shell
 =============== Jenkins Password ===============
 c403ff75298740de9d13006e2ee4ac1b
-```
+````
 
-## 4. Add the variables
+## 5. Add the variables
 
 After you unlock and install Jenkins using the password you found in the execution result, go to `Dashboard >> Manage Jenkins >> Global Tool Configuration` and add the variables below.
 
@@ -160,7 +172,7 @@ Copy the line `/usr/share/maven`
 
 ![maven](.files/maven.png)
 
-## 5. Add the plugins
+## 6. Add the plugins
 
 After you set all the variables, go to `Dashboard >> Manage Jenkins >> Manage Plugins` and the plugins below.
 
@@ -171,9 +183,9 @@ After you set all the variables, go to `Dashboard >> Manage Jenkins >> Manage Pl
 - Kubernetes Client API
 - GitHub Integration
 
-## 6. Add the Kubernetes context
+## 7. Add the Kubernetes context
 
-To add the Kubernetes context, SHH the Jenkins server and run.
+To add the Kubernetes context, SHH the Jenkins server and run. You can find the URL in the 
 
 ```shell
 cat .kube/config
