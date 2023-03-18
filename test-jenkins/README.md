@@ -243,7 +243,7 @@ Change the `Kind` to `Secret file`.
 
 Select the file you saved in your local with the context you gathered after SSH the server and run the `cat` command.
 
-Add the name `Kubeconfig`.
+Add the `ID` `Kubeconfig`.
 
 Add this configuration.
 
