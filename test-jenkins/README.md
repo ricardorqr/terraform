@@ -265,5 +265,5 @@ Save these settings.
 
 ## 8. Create Pipelines
 
-You can get the pipelines code on the [Using Jenkins to deploy Spring Boot Applications into EKS](https://github.com/ricardorqr/jenkins-github-eks)
+You can get the pipelines codes on the [Using Jenkins to deploy Spring Boot Applications into EKS](https://github.com/ricardorqr/jenkins-github-eks) project.
 
