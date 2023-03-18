@@ -110,7 +110,7 @@ Outputs:
 website_url = "http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080"
 ```
 
-Open this URL `http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080`.
+Open this URL `http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080` in your browser.
 
 In the execution result, find the code below. This is the password to unlock Jenkins.
 
