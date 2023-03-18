@@ -109,7 +109,7 @@ c403ff75298740de9d13006e2ee4ac1b
 
 ## 4. Add the variables
 
-After you unlock and install Jenkins using the password, go to `Dashboard >> Manage Jenkins >> Global Tool Configuration` and add the variables below.
+After you unlock and install Jenkins using the password you found in the execution result, go to `Dashboard >> Manage Jenkins >> Global Tool Configuration` and add the variables below.
 
 ### Java
 
