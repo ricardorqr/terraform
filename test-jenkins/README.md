@@ -90,14 +90,14 @@ null_resource.ansible (remote-exec): docker:x:992:ec2-user,jenkins
 null_resource.ansible (remote-exec): =============== Jenkins Password ===============
 null_resource.ansible (remote-exec): 04c4b1ae96e04ac19ce098591726e52d
 
-null_resource.ansible (remote-exec): Added new context arn:aws:eks:us-east-1:092369361076:cluster/test-eks to /home/ec2-user/.kube/config
+null_resource.ansible (remote-exec): Added new context arn:aws:eks:us-east-1:012345678901:cluster/test-eks to /home/ec2-user/.kube/config
 null_resource.ansible: Creation complete after 9m14s [id=2947386559599772056]
 
 Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-website_url = "http://ec2-54-236-35-171.compute-1.amazonaws.com:8080"
+website_url = "http://ec2-XXX-XXX-XXX-XXX.compute-1.amazonaws.com:8080"
 ```
 
 In the execution result, find the code below. This is the password to unlock Jenkins.
@@ -185,19 +185,19 @@ The result will something lke this.
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1ETXhOekV5TXpRek1Gb1hEVE16TURNeE5ERXlNelF6TUZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTDVqCjlpVmhXZFluVEs5OUNtc2hEV0tHZURWV2hhN1EvWnIxQlF6b0luUkFUSVRMRlFtMmVQNUNBb2ZQaDFsRXJRaHYKSW5hZGMxYXBYODVCa0VqeHl6cjhVbXV6a21FNHFNRTBOZVBiZWMrdzJRRDk2L2JXMnhYWG5VSnl4M2VMYUI0TwpHWTVzaU5qTkpsMnQxSlhISmswLzlKUi9wV0dHcEdZVXM4NzRNK3VBeWZHaVM1d1JvaGVGb2JkWE9maHRXd015Cnk2RGxrRkpkSGdSeU5wNmVucitUMnRIM25xSDdIRXV5R0hhSHBEb1Y5WktDdGMrMjZHRHE3RjJkUlFiYjlMNG4KR1dIZkZMR3FPSWxTVjNza1JtODFHZ1pwZlpMRkdxclBGWmpmNFpiZk92OVV0RTIzdVZ1WXhiVW80cko5TGE0OApvZWNYb3NkTld2S0gwOWtYTmpzQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZGZFRvWmhsQXZDNU5LWnliYXRJQy9QUElHU3VNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSXp1OGs0QURXbFIrZzNJOTU5ZgpVOHJKNkVhUElYNnVOZ2lqR3lLa1I1RitMeHl2dHQ1R213NEExRGVqS3dsT1NQOVo0ZmdoK2JOTjJJK1BkZklxCitFbDhmZnd4VEkybkxnK0FVcHRKY3lvKzVMa29WOVpxckUrNEJSdGN0VE0ycWpxeDF3ckJ2eUZyZys0OTI3YUMKdC91cUJIeFdORUJ3enZDZU1NT1JJMnhNN1ZHRjNHakhFZGhBTWFiNHZrdUdKY3VGUVF1Q2NXbXJPb2xKQWNMego0QUhIUy9mQjFJNTUwUzY0aUdWZ0Rnd2hDYWVHaFVYaTV1ZGlTejUzWmlYUEFxNzFZSHpHajRzWkFPQUs1Z01nCk1wQUw4SDBrZGNIRDVPOEFYV0hxc1ZCOGVBREUycXdvUmxDL3RSNHBLamYxcExhemFiTi9udmdRV0lhZ1A2OU8KVVB3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-    server: https://78A69F06F5508DF7EAAB3D1304C17688.gr7.us-east-1.eks.amazonaws.com
-  name: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
+    certificate-authority-data: LS0tLS1CRUQotLS0tLKJBHGVDRVJUSUZJQ0FURS0tLS0tCg==...
+    server: https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXX.gr7.us-east-1.eks.amazonaws.com
+  name: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
 contexts:
 - context:
-    cluster: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
-    user: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
-  name: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
-current-context: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
+    cluster: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
+    user: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
+  name: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
+current-context: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
 kind: Config
 preferences: {}
 users:
-- name: arn:aws:eks:us-east-1:092369361076:cluster/test-eks
+- name: arn:aws:eks:us-east-1:012345678901:cluster/test-eks
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1beta1
