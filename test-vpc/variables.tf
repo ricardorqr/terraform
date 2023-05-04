@@ -1,8 +1,12 @@
-variable region {}
+# AWS
 variable profile {}
 variable project-name {}
+variable env {}
+
+# VPC
+variable region {}
+variable azs {}
 variable vpc-cidr {}
-variable public-subnet-a-cidr {}
-variable public-subnet-b-cidr {}
-variable private-subnet-a-cidr {}
-variable private-subnet-b-cidr {}
+variable public-subnet-cidrs {}
+variable private-subnet-cidrs {}
+variable database-subnet-cidrs {}
