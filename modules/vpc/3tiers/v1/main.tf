@@ -30,7 +30,6 @@ module "vpc" {
   one_nat_gateway_per_az                                       = false
   enable_dns_hostnames                                         = true
   enable_dns_support                                           = true
-  create_database_subnet_route_table                           = true
   public_subnet_enable_dns64                                   = true
   public_subnet_enable_resource_name_dns_a_record_on_launch    = true
   public_subnet_enable_resource_name_dns_aaaa_record_on_launch = true
