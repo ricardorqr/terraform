@@ -6,3 +6,5 @@
 /test-jenkins/.terraform.lock.hcl
 /test-jenkins/aws/
 /test-jenkins/.aws/
+/modules/vpc/3tiers/v1/.terraform/
+/modules/vpc/3tiers/v1/.terraform.lock.hcl
