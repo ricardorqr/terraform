@@ -31,13 +31,13 @@ module "vpc" {
   enable_dns_hostnames                                         = true
   enable_dns_support                                           = true
   create_database_subnet_route_table                           = true
-  public_subnet_suffix                                         = "public-subnet"
-  private_subnet_suffix                                        = "private-subnet"
-  database_subnet_suffix                                       = "database-subnet"
   public_subnet_enable_dns64                                   = true
   public_subnet_enable_resource_name_dns_a_record_on_launch    = true
   public_subnet_enable_resource_name_dns_aaaa_record_on_launch = true
   map_public_ip_on_launch                                      = true
+  public_subnet_suffix                                         = "public-subnet"
+  private_subnet_suffix                                        = "private-subnet"
+  database_subnet_suffix                                       = "database-subnet"
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"                    = 1
