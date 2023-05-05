@@ -12,7 +12,7 @@ module "vpc" {
   database-subnet-cidrs = var.database-subnet-cidrs
 }
 
-module "sg" {
+module "vpc-sg" {
   source = "../../modules/sg/vpc/v1"
 
   profile      = var.profile
