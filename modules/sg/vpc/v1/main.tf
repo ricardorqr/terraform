@@ -62,7 +62,7 @@ module "private-sg" {
   vpc_id                                                   = var.vpc-id
   egress_cidr_blocks                                       = ["0.0.0.0/0"]
   egress_rules                                             = ["all-all"]
-  number_of_computed_ingress_with_source_security_group_id = 4
+  number_of_computed_ingress_with_source_security_group_id = 5
 
   computed_ingress_with_source_security_group_id = [
     {
@@ -83,6 +83,11 @@ module "private-sg" {
     {
       rule                     = "all-icmp"
       description              = "Open all IPV4 ICMP"
+      source_security_group_id = module.public-sg.security_group_id
+    },
+    {
+      rule                     = "ssh-tcp"
+      description              = "Open SSH ports"
       source_security_group_id = module.public-sg.security_group_id
     }
   ]
