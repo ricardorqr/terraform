@@ -83,6 +83,7 @@ module "eks" {
     }
   }
 
+  # Role used in Karpenter
   aws_auth_roles = [
     {
       rolearn  = module.karpenter.role_arn
@@ -114,6 +115,7 @@ module "eks" {
         AmazonEBSCSIDriverPolicy       = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       }
 
+      # EC2IMDSV2
       metadata_options = {
         http_endpoint               = "enabled"
         http_tokens                 = "required"
@@ -121,6 +123,7 @@ module "eks" {
         instance_metadata_tags      = "disabled"
       }
 
+      # Encrypted EBS
       block_device_mappings = {
         xvda = {
           device_name = "/dev/xvda"
@@ -145,6 +148,7 @@ module "eks" {
     }
   }
 
+  # Tag used in Karpenter
   tags = {
     "karpenter.sh/discovery" = var.project-name
   }
@@ -286,6 +290,7 @@ resource "kubectl_manifest" "karpenter_provisioner" {
 # Karpenter Node not ready role
 ################################
 
+# https://karpenter.sh/v0.27.3/troubleshooting/#node-terminates-before-ready-on-failed-encrypted-ebs-volume
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_policy" "node-not-ready-policy" {
