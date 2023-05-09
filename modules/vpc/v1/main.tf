@@ -38,11 +38,13 @@ module "vpc" {
   private_subnet_suffix                                        = "private-subnet"
   database_subnet_suffix                                       = "database-subnet"
 
+  # Tags used in EKS and ELB
   public_subnet_tags = {
     "kubernetes.io/role/elb"                    = 1
     "kubernetes.io/cluster/${var.project-name}" = "owned"
   }
 
+  # Tags used in EKS, Karpenter and ELB
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb"           = 1
     "kubernetes.io/cluster/${var.project-name}" = "owned"
