@@ -79,7 +79,9 @@ module "eks" {
       most_recent = true
     }
     aws-ebs-csi-driver = {
-      most_recent = true
+      most_recent              = true
+      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
+      resolve_conflicts        = "OVERWRITE"
     }
   }
 
@@ -340,4 +342,29 @@ EOT
 resource "aws_iam_role_policy_attachment" "karpenter-attach-policy" {
   role       = module.karpenter.irsa_name
   policy_arn = aws_iam_policy.node-not-ready-policy.arn
+}
+
+################
+# EBS CSI Drive
+################
+
+# https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-role-for-service-accounts-eks
+module "ebs_csi_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name             = "${var.project-name}-ebs-csi-driver-role"
+  policy_name_prefix    = "${var.project-name}-"
+  attach_ebs_csi_policy = true
+
+  role_policy_arns = {
+    NodeNotReadyPolicy = aws_iam_policy.node-not-ready-policy.arn
+  }
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
 }
