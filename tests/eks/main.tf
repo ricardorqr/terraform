@@ -35,3 +35,7 @@ module "eks" {
   node-type          = var.node-type
   kubernetes-version = var.kubernetes-version
 }
+
+output "eks-oidc-arn" {
+  value = module.eks.oidc_provider_arn
+}
