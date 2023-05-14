@@ -51,7 +51,9 @@ provider "helm" {
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", var.project-name, "--region", var.region]
+      args        = [
+        "eks", "get-token", "--cluster-name", var.project-name, "--region", var.region, "--profile", var.profile
+      ]
     }
   }
 }
@@ -63,7 +65,9 @@ provider "kubectl" {
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
-    args        = ["eks", "get-token", "--cluster-name", var.project-name, "--region", var.region]
+    args        = [
+      "eks", "get-token", "--cluster-name", var.project-name, "--region", var.region, "--profile", var.profile
+    ]
   }
 }
 
@@ -72,8 +76,10 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", var.project-name, "--region", var.region]
     command     = "aws"
+    args        = [
+      "eks", "get-token", "--cluster-name", var.project-name, "--region", var.region, "--profile", var.profile
+    ]
   }
 }
 
