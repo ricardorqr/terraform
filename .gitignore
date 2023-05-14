@@ -15,3 +15,4 @@
 /modules/sg/vpc/v1/.terraform/
 /tests/eks/.terraform/
 /tests/eks/.terraform.lock.hcl
+/modules/sg/vpc/v1/.terraform.lock.hcl
