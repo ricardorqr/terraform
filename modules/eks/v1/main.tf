@@ -204,6 +204,9 @@ module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
   version = "19.13.1"
 
+  irsa_policy_name                = "${var.project-name}-karpeter-irsa-policy"
+  irsa_name                       = "${var.project-name}-karpeter-irsa-role"
+  iam_role_name                   = "${var.project-name}-karpeter-role"
   cluster_name                    = module.eks.cluster_name
   irsa_oidc_provider_arn          = module.eks.oidc_provider_arn
   irsa_namespace_service_accounts = ["karpenter:karpenter"]
@@ -306,7 +309,7 @@ resource "kubectl_manifest" "karpenter-provisioner" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_policy" "node-not-ready-policy" {
-  name        = "${var.project-name}-Node-NotReady-policy"
+  name        = "${var.project-name}-node-not-ready-policy"
   description = "Used in Karpenter and Load Balancer Controller"
   path        = "/"
   policy      = <<EOT
