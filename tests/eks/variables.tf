@@ -14,3 +14,5 @@ variable database-subnet-cidrs {}
 # EKS
 variable node-type {}
 variable kubernetes-version {}
+variable domain-application {}
+variable veeva-hosted-zone-id {}
