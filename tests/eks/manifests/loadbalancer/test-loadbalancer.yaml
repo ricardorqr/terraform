@@ -2,28 +2,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: echoserver
+  name: test-loadbalancer
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: echoserver
+      app: test-loadbalancer
   replicas: 1
   template:
     metadata:
       labels:
-        app: echoserver
+        app: test-loadbalancer
     spec:
       containers:
         - image: k8s.gcr.io/e2e-test-images/echoserver:2.5
-          name: echoserver
+          name: test-loadbalancer
           ports:
             - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: echoserver
+  name: test-loadbalancer
   namespace: default
 spec:
   ports:
@@ -31,26 +31,29 @@ spec:
       protocol: TCP
   type: ClusterIP
   selector:
-    app: echoserver
+    app: test-loadbalancer
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: echoserver
+  name: test-loadbalancer
   namespace: default
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:495633144232:certificate/f9d8f900-4c68-4718-9af4-e1e8df4c72dd
+    alb.ingress.kubernetes.io/target-type: 'ip'
 spec:
   ingressClassName: alb
   rules:
-    - host: rico.vdmdev.com
+    - host: test-loadbalancer.vdmdev.com
       http:
         paths:
           - path: /
             pathType: Exact
             backend:
               service:
-                name: echoserver
+                name: test-loadbalancer
                 port:
                   number: 8080
