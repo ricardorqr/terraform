@@ -209,7 +209,7 @@ module "karpenter" {
   iam_role_name                   = "${var.project-name}-karpeter-role"
   cluster_name                    = module.eks.cluster_name
   irsa_oidc_provider_arn          = module.eks.oidc_provider_arn
-  irsa_namespace_service_accounts = ["karpenter:karpenter"]
+  irsa_namespace_service_accounts = ["kube-system:karpenter"]
 }
 
 # Logout of docker to perform an unauthenticated pull against the public ECR
@@ -221,13 +221,12 @@ resource "null_resource" "docker-logout" {
 }
 
 resource "helm_release" "karpenter" {
-  namespace        = "karpenter"
-  create_namespace = true
-  name             = "karpenter"
-  repository       = "oci://public.ecr.aws/karpenter"
-  chart            = "karpenter"
-  version          = "v0.27.3"
-  depends_on       = [null_resource.docker-logout, module.karpenter, module.eks]
+  name       = "karpenter"
+  repository = "oci://public.ecr.aws/karpenter"
+  chart      = "karpenter"
+  namespace  = "kube-system"
+  version    = "v0.27.3"
+  depends_on = [null_resource.docker-logout, module.karpenter, module.eks]
 
   set {
     name  = "settings.aws.clusterName"
@@ -437,5 +436,93 @@ resource "helm_release" "aws-load-balancer-controller" {
   set {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = module.aws-load-balancer-controller-irsa-role.iam_role_arn
+  }
+}
+
+###############
+# External DNS
+###############
+
+# https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-role-for-service-accounts-eks
+module "external-dns-role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name                  = "${var.project-name}-external-dns-role"
+  policy_name_prefix         = "${var.project-name}-"
+  attach_external_dns_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:external-dns"]
+    }
+  }
+}
+
+resource "helm_release" "external-dns" {
+  name       = "external-dns"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "external-dns"
+  namespace  = "kube-system"
+  depends_on = [module.external-dns-role, module.eks, helm_release.aws-load-balancer-controller]
+
+  set {
+    name  = "wait-for"
+    value = module.external-dns-role.iam_role_arn
+  }
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com\\/role-arn"
+    value = module.external-dns-role.iam_role_arn
+  }
+}
+
+######################
+# Certificate Manager
+######################
+
+data "aws_route53_zone" "vdmcom" {
+  zone_id = var.veeva-hosted-zone-id
+}
+
+# https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-role-for-service-accounts-eks
+module "certificate-manager-role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name                     = "${var.project-name}-certificate-manager-role"
+  policy_name_prefix            = "${var.project-name}-"
+  attach_cert_manager_policy    = true
+  cert_manager_hosted_zone_arns = [data.aws_route53_zone.vdmcom.arn]
+
+  oidc_providers = {
+    eks = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:cert-manager"]
+    }
+  }
+}
+
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  namespace  = "kube-system"
+  depends_on = [module.certificate-manager-role, module.eks, helm_release.external-dns]
+
+  set {
+    name  = "wait-for"
+    value = module.certificate-manager-role.iam_role_arn
+  }
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com\\/role-arn"
+    value = module.certificate-manager-role.iam_role_arn
   }
 }

@@ -14,3 +14,7 @@ output oidc_provider_arn {
   value = module.eks.oidc_provider_arn
 }
 
+output hosted-zone {
+  value = data.aws_route53_zone.vdmcom
+}
+

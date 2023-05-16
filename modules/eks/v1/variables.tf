@@ -12,3 +12,5 @@ variable private-subnet-ids {}
 # EKS
 variable node-type {}
 variable kubernetes-version {}
+variable domain-application {}
+variable veeva-hosted-zone-id {}
