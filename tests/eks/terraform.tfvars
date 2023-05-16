@@ -13,4 +13,4 @@ database-subnet-cidrs = ["10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24"]
 node-type            = "t3a.large"
 kubernetes-version   = "1.25"
 domain-application   = "test-loadbalancer"
-veeva-hosted-zone-id = "ZJB0WC6B9RH6"
+veeva-hosted-zone-id = "Z04686681FUTOPR4SFIBB"
