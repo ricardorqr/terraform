@@ -1,4 +1,4 @@
-project-name = "eks-karpenter-rico"
+project-name = "eks-test-rico"
 env          = "dev"
 
 # https://www.fryguy.net/wp-content/tools/subnets.html
