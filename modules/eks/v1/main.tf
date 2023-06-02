@@ -476,6 +476,11 @@ resource "helm_release" "external-dns" {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com\\/role-arn"
     value = module.external-dns-role.iam_role_arn
   }
+
+  set {
+    name  = "policy"
+    value = "sync"
+  }
 }
 
 ######################
@@ -525,4 +530,18 @@ resource "helm_release" "cert_manager" {
     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com\\/role-arn"
     value = module.certificate-manager-role.iam_role_arn
   }
+}
+
+##################
+## Metrics Server
+##################
+
+# https://github.com/kubernetes-sigs/metrics-server/releases/tag/metrics-server-helm-chart-3.10.0
+# https://github.com/kubernetes-sigs/metrics-server/blob/master/charts/metrics-server/README.md
+resource "helm_release" "metrics-server" {
+  name = "metrics-server"
+
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart      = "metrics-server"
+  namespace  = "kube-system"
 }
