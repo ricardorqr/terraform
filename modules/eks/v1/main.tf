@@ -209,7 +209,7 @@ module "karpenter" {
   iam_role_name                   = "${var.project-name}-karpeter-role"
   cluster_name                    = module.eks.cluster_name
   irsa_oidc_provider_arn          = module.eks.oidc_provider_arn
-  irsa_namespace_service_accounts = ["kube-system:karpenter"]
+  irsa_namespace_service_accounts = ["karpenter:karpenter"]
 }
 
 # Logout of docker to perform an unauthenticated pull against the public ECR
@@ -221,12 +221,13 @@ resource "null_resource" "docker-logout" {
 }
 
 resource "helm_release" "karpenter" {
-  name       = "karpenter"
-  repository = "oci://public.ecr.aws/karpenter"
-  chart      = "karpenter"
-  namespace  = "kube-system"
-  version    = "v0.27.3"
-  depends_on = [null_resource.docker-logout, module.karpenter, module.eks]
+  name             = "karpenter"
+  repository       = "oci://public.ecr.aws/karpenter"
+  chart            = "karpenter"
+  namespace        = "karpenter"
+  create_namespace = true
+  version          = "v0.27.3"
+  depends_on       = [null_resource.docker-logout, module.karpenter, module.eks]
 
   set {
     name  = "settings.aws.clusterName"
@@ -376,7 +377,7 @@ module "ebs-csi-irsa-role" {
   oidc_providers = {
     ex = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+      namespace_service_accounts = ["ebs-csi-driver:ebs-csi-controller-sa"]
     }
   }
 }
@@ -401,17 +402,18 @@ module "aws-load-balancer-controller-irsa-role" {
   oidc_providers = {
     ex = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+      namespace_service_accounts = ["aws-load-balancer:aws-load-balancer-controller"]
     }
   }
 }
 
 resource "helm_release" "aws-load-balancer-controller" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  depends_on = [module.aws-load-balancer-controller-irsa-role, module.eks, helm_release.karpenter]
+  name             = "aws-load-balancer-controller"
+  repository       = "https://aws.github.io/eks-charts"
+  chart            = "aws-load-balancer-controller"
+  namespace        = "aws-load-balancer"
+  create_namespace = true
+  depends_on       = [module.aws-load-balancer-controller-irsa-role, module.eks, helm_release.karpenter]
 
   set {
     name  = "region"
@@ -455,17 +457,18 @@ module "external-dns-role" {
   oidc_providers = {
     ex = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:external-dns"]
+      namespace_service_accounts = ["external-dns:external-dns"]
     }
   }
 }
 
 resource "helm_release" "external-dns" {
-  name       = "external-dns"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "external-dns"
-  namespace  = "kube-system"
-  depends_on = [module.external-dns-role, module.eks, helm_release.aws-load-balancer-controller]
+  name             = "external-dns"
+  repository       = "https://charts.bitnami.com/bitnami"
+  chart            = "external-dns"
+  namespace        = "external-dns"
+  create_namespace = true
+  depends_on       = [module.external-dns-role, module.eks, helm_release.aws-load-balancer-controller]
 
   set {
     name  = "wait-for"
@@ -504,17 +507,18 @@ module "certificate-manager-role" {
   oidc_providers = {
     eks = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:cert-manager"]
+      namespace_service_accounts = ["cert-manager:cert-manager"]
     }
   }
 }
 
 resource "helm_release" "cert_manager" {
-  name       = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  chart      = "cert-manager"
-  namespace  = "kube-system"
-  depends_on = [module.certificate-manager-role, module.eks, helm_release.external-dns]
+  name             = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  chart            = "cert-manager"
+  namespace        = "cert-manager"
+  create_namespace = true
+  depends_on       = [module.certificate-manager-role, module.eks, helm_release.external-dns]
 
   set {
     name  = "wait-for"
@@ -533,7 +537,7 @@ resource "helm_release" "cert_manager" {
 }
 
 ##################
-## Metrics Server
+# Metrics Server
 ##################
 
 # https://github.com/kubernetes-sigs/metrics-server/releases/tag/metrics-server-helm-chart-3.10.0
@@ -541,7 +545,8 @@ resource "helm_release" "cert_manager" {
 resource "helm_release" "metrics-server" {
   name = "metrics-server"
 
-  repository = "https://kubernetes-sigs.github.io/metrics-server/"
-  chart      = "metrics-server"
-  namespace  = "kube-system"
+  repository       = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart            = "metrics-server"
+  namespace        = "metrics-server"
+  create_namespace = true
 }
