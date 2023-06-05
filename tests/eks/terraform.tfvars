@@ -1,4 +1,4 @@
-project-name = "eks-test-rico"
+project-name = "eks-argocd-rico"
 env          = "dev"
 
 # https://www.fryguy.net/wp-content/tools/subnets.html
