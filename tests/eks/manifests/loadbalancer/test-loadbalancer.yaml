@@ -39,13 +39,14 @@ metadata:
   name: test-loadbalancer
   namespace: default
   annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/load-balancer-name: test-loadbalancer-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:092369361076:certificate/ce68637a-aeaa-4910-929a-219fb5597cb1
     alb.ingress.kubernetes.io/target-type: 'ip'
 spec:
-  ingressClassName: alb
   rules:
     - host: test-loadbalancer.devwithrico.ricardodev.ca
       http:
