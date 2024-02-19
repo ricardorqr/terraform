@@ -1,3 +1,5 @@
+profile = "vdmdevops"
+
 aws_region          = "us-west-2"
 environment_name    = "eks-blueprint"
 eks_admin_role_name = "eks-blueprints-role-rico"
