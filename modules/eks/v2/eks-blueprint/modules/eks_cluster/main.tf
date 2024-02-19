@@ -2,6 +2,7 @@
 provider "aws" {
   region = "us-east-1"
   alias  = "virginia"
+  profile = var.profile
   #  region = var.aws_region
   #  alias   = "oregon"
   #  profile = "vdmdevops"
