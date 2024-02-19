@@ -283,64 +283,65 @@ module "eks_blueprints_dev_teams" {
 
 }
 
-#module "kubernetes_addons" {
-#  source = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.32.1/modules/kubernetes-addons"
-#
-#  eks_cluster_id = module.eks.cluster_name
-#
-#  #---------------------------------------------------------------
-#  # ARGO CD ADD-ON
-#  #---------------------------------------------------------------
-#
-#  enable_argocd         = true
-#  argocd_manage_add_ons = true # Indicates that ArgoCD is responsible for managing/deploying Add-ons.
-#
-#  argocd_applications = {
-#    addons    = local.addons_application
+module "kubernetes_addons" {
+  source = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.32.1/modules/kubernetes-addons"
+
+  eks_cluster_id = module.eks.cluster_name
+
+  #---------------------------------------------------------------
+  # ARGO CD ADD-ON
+  #---------------------------------------------------------------
+
+  enable_argocd         = true
+  argocd_manage_add_ons = true # Indicates that ArgoCD is responsible for managing/deploying Add-ons.
+
+  argocd_applications = {
+    addons    = local.addons_application
 #    workloads = local.workload_application # We comment it for now
-#  }
-#
-#  argocd_helm_config = {
-#    set_sensitive = [
-#      {
-#        name  = "configs.secret.argocdServerAdminPassword"
-#        value = bcrypt(data.aws_secretsmanager_secret_version.admin_password_version.secret_string)
-#      }
-#    ]
-#    set = [
-#      {
-#        name  = "server.service.type"
-#        value = "LoadBalancer"
-#      }
-#    ]
-#  }
-#
-#  #---------------------------------------------------------------
-#  # EKS Managed AddOns
-#  # https://aws-ia.github.io/terraform-aws-eks-blueprints/add-ons/
-#  #---------------------------------------------------------------
-#
-#  enable_amazon_eks_coredns            = true
-#  enable_amazon_eks_kube_proxy         = true
-#  enable_amazon_eks_vpc_cni            = true
-#  enable_amazon_eks_aws_ebs_csi_driver = true
-#
-#  #---------------------------------------------------------------
-#  # ADD-ONS - You can add additional addons here
-#  # https://aws-ia.github.io/terraform-aws-eks-blueprints/add-ons/
-#  #---------------------------------------------------------------
-#
-#  enable_aws_load_balancer_controller = true
-#  enable_aws_for_fluentbit            = true
-#  enable_metrics_server               = true
-#  #  enable_argo_rollouts                       = true # <-- Add this line
-#  #  enable_karpenter                           = true # <-- Add this line
-#  #  karpenter_node_iam_instance_profile        = module.karpenter.instance_profile_name
-#  #  karpenter_enable_spot_termination_handling = true
-#  #
-#  #  enable_kubecost = true
-#  tags                                = local.tags
-#}
+  }
+
+  argocd_helm_config = {
+    set_sensitive = [
+      {
+        name  = "configs.secret.argocdServerAdminPassword"
+        value = bcrypt(data.aws_secretsmanager_secret_version.admin_password_version.secret_string)
+      }
+    ]
+    set = [
+      {
+        name  = "server.service.type"
+        value = "LoadBalancer"
+      }
+    ]
+  }
+
+  #---------------------------------------------------------------
+  # EKS Managed AddOns
+  # https://aws-ia.github.io/terraform-aws-eks-blueprints/add-ons/
+  #---------------------------------------------------------------
+
+  enable_amazon_eks_coredns            = true
+  enable_amazon_eks_kube_proxy         = true
+  enable_amazon_eks_vpc_cni            = true
+  enable_amazon_eks_aws_ebs_csi_driver = true
+
+  #---------------------------------------------------------------
+  # ADD-ONS - You can add additional addons here
+  # https://aws-ia.github.io/terraform-aws-eks-blueprints/add-ons/
+  #---------------------------------------------------------------
+
+  enable_aws_load_balancer_controller = true
+  enable_aws_for_fluentbit            = true
+  enable_metrics_server               = true
+  #  enable_argo_rollouts                       = true # <-- Add this line
+  #  enable_karpenter                           = true # <-- Add this line
+  #  karpenter_node_iam_instance_profile        = module.karpenter.instance_profile_name
+  #  karpenter_enable_spot_termination_handling = true
+  #
+  #  enable_kubecost = true
+  tags                                = local.tags
+}
+
 ################################################################################
 ## Karpenter
 #################################################################################

@@ -15,29 +15,29 @@ variable "service_name" {
   default     = "blue"
 }
 
-#variable "workload_repo_url" {
-#  type        = string
-#  description = "Git repo URL for the ArgoCD workload deployment"
-#  default     = "https://github.com/aws-samples/eks-blueprints-workloads.git"
-#}
-#
-#variable "workload_repo_revision" {
-#  type        = string
-#  description = "Git repo revision in workload_repo_url for the ArgoCD workload deployment"
-#  default     = "main"
-#}
-#
-#variable "workload_repo_path" {
-#  type        = string
-#  description = "Git repo path in workload_repo_url for the ArgoCD workload deployment"
-#  default     = "envs/dev"
-#}
-#
-#variable "addons_repo_url" {
-#  type        = string
-#  description = "Git repo URL for the ArgoCD addons deployment"
-#  default     = "https://github.com/aws-samples/eks-blueprints-add-ons.git"
-#}
+variable "workload_repo_url" {
+  type        = string
+  description = "Git repo URL for the ArgoCD workload deployment"
+  default     = "https://github.com/aws-samples/eks-blueprints-workloads.git"
+}
+
+variable "workload_repo_revision" {
+  type        = string
+  description = "Git repo revision in workload_repo_url for the ArgoCD workload deployment"
+  default     = "main"
+}
+
+variable "workload_repo_path" {
+  type        = string
+  description = "Git repo path in workload_repo_url for the ArgoCD workload deployment"
+  default     = "envs/dev"
+}
+
+variable "addons_repo_url" {
+  type        = string
+  description = "Git repo URL for the ArgoCD addons deployment"
+  default     = "https://github.com/aws-samples/eks-blueprints-add-ons.git"
+}
 
 variable "cluster_version" {
   description = "The Version of Kubernetes to deploy"
