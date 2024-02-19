@@ -86,8 +86,8 @@ module "eks" {
 
   manage_aws_auth_configmap = true
   aws_auth_roles            = flatten([
-    #    module.eks_blueprints_platform_teams.aws_auth_configmap_role,
-    #    [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
+    module.eks_blueprints_platform_teams.aws_auth_configmap_role,
+    [for team in module.eks_blueprints_dev_teams : team.aws_auth_configmap_role],
     #{
     #  rolearn  = module.karpenter.role_arn
     #  username = "system:node:{{EC2PrivateDNSName}}"
