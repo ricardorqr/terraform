@@ -16,3 +16,10 @@
 /tests/eks/.terraform/
 /tests/eks/.terraform.lock.hcl
 /modules/sg/vpc/v1/.terraform.lock.hcl
+/modules/eks/v2/eks-blueprint/environment/.terraform/
+/modules/eks/v2/eks-blueprint/environment/.terraform.lock.hcl
+/modules/eks/v2/eks-blueprint/environment/terraform.tfstate
+/modules/eks/v2/eks-blueprint/environment/.terraform.tfstate.lock.info
+/modules/eks/v2/eks-blueprint/eks-blue/.terraform/
+/modules/eks/v2/eks-blueprint/eks-blue/.terraform.lock.hcl
+/modules/eks/v2/eks-blueprint/eks-blue/terraform.tfstate
